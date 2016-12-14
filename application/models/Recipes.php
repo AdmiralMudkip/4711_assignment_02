@@ -62,7 +62,7 @@ class Recipes extends CI_Model {
     public function getIngredientAmounts($recipeID){
         $this->rest->initialize(array('server'=>REST_SERVER));
         $this->rest->option(CURLOPT_PORT, REST_PORT);
-        return $this->rest->get('/recipesupplies/item/amount/' . $key);
+        return $this->rest->get('/recipesupplies/item/amount/' . $recipeID);
         
         /*
         $sql = sprintf("SELECT supplies.id, amount from SUPPLIES inner join RECIPESUPPLIES on SUPPLIES.id = RECIPESUPPLIES.supplyID inner join RECIPES on RECIPESUPPLIES.recipeID = RECIPES.ID where recipeID = %d", $recipeID); 
@@ -74,17 +74,14 @@ class Recipes extends CI_Model {
     public function createRecipe($recipe, $ingredients, $price){
         $names = ['id','name','description','price','picture','category'];
         $object = new StdClass;
-        foreach ($names as $name)
+        foreach ($names as $name){
             $object->$name = "";
-        return $object;
-        
-        $retrievedrecipe = $this->rest->post('/recipes/item/recipe/' . $recipe['code'], $recipe);
-        $retrievedingredients = $this->rest->post('/recipes/item/ingredients/' . $ingredients['code'], $ingredients);
-        $retrievedprice = $this->rest->post('/recipes/item/price/' . $price['code'], $price);
+        }
         
         
-        
-        
+        $this->rest->post('/recipes/item/recipe/' . $recipe['code'], $recipe);
+        $this->rest->post('/recipes/item/ingredients/' . $ingredients['code'], $ingredients);
+        $this->rest->post('/recipes/item/price/' . $price['code'], $price);
         
         /*
         // create that entry
